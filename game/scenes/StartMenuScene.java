@@ -1,6 +1,5 @@
 package game.scenes;
 
-import game.scenes.layouts.IntroLayout;
 import game.scenes.layouts.StartMenuLayout;
 import javafx.scene.Scene;
 
