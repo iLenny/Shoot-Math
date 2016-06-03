@@ -6,19 +6,19 @@ Shoot Math, a desktop platform 2D side scrolling game that aims to expose childr
 ******************************
       Q U E S T I O N S
 ******************************
-Who owns this project?
-   
-   the owners are:
+<strong>Who owns this project?</strong>
+  
+the owners are:
       - Leibniz H. Berihuete 
       - Issac Yuu
       - Rashed Alam
 
-What programming language are you using?
+<strong>What programming language are you using?</strong>
    Java
        - We are using JavaFX as our main framework.
        - We are also planning on adding a database using MySQL as well
 
-What developing softwares are you guys using?
+<strong>What developing softwares are you guys using?</strong>
   - Eclipse  (Leibniz is using this.)
   - Intelli-J  (Rashed is using this.)
   - Netbeans  (Issac is using this.)
