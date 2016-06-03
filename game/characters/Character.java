@@ -26,14 +26,14 @@ public abstract class Character extends Pane {
 	private static final double DEFAULT_FPS = 1000/30; // 30 frames per second
 	
 	// For character:
-	private ImageView character;
+	protected ImageView character;
 	private String name;
 	private double speed;
 	private double hp;
 	
 	// For character control
-	private boolean allowToMove;
-	private String moveKey;
+	private boolean allowToMove = true;
+	private String moveKey = "";
 	
 	// For character animation:
 	private KeyFrame keyFrame;
@@ -58,6 +58,7 @@ public abstract class Character extends Pane {
 	public Character() {
 		// Initialize:
 		character = new ImageView();
+		character.setFocusTraversable(true);
 		setName(DEFAULT_NAME);
 		setSpeed(DEFAULT_SPEED);
 		setHP(DEFAULT_HP);
@@ -189,6 +190,7 @@ public abstract class Character extends Pane {
 				moveKey = "RIGHT";
 				allowToMove = true;
 				handleRightScale();
+				timeline.play();
 			}
 			
 			// LEFT
@@ -196,6 +198,7 @@ public abstract class Character extends Pane {
 				moveKey = "LEFT";
 				allowToMove = true;
 				handleLeftScale();
+				timeline.play();
 			}
 			
 			// JUMP
@@ -220,13 +223,35 @@ public abstract class Character extends Pane {
 			if(e.getCode().equals(RIGHT)) {
 				moveKey = "";
 				allowToMove = false;
+				resetSprite();
+				timeline.pause();
+				
 			}
 			
 			// LEFT
 			else if(e.getCode().equals(LEFT)) {
 				moveKey = "";
 				allowToMove = false;
+				resetSprite();
+				timeline.pause();
 			}
+			
+			// JUMP
+			if(e.getCode().equals(JUMP)) {
+				
+				timeline.pause();
+			}
+			
+			// WEAPON
+			if(e.getCode().equals(WEAPON)) {
+				timeline.pause();
+			}
+			
+			// SHOOT
+			if(e.getCode().equals(SHOOT)) {
+				timeline.pause();
+			}
+			
 		});		
 	}
 	
@@ -249,7 +274,6 @@ public abstract class Character extends Pane {
 		
 		timeline = new Timeline(keyFrame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
 	}
 	
 /* **********************
@@ -275,5 +299,11 @@ public abstract class Character extends Pane {
 	 * the right scale here. 
 	 */
 	protected abstract void handleRightScale();
+	
+	/**
+	 * resetSprite
+	 * This resets the character to its standing position
+	 */
+	protected abstract void resetSprite();
 	
 }

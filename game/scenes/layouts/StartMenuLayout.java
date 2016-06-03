@@ -1,5 +1,7 @@
 package game.scenes.layouts;
 
+import game.Controller;
+import game.characters.Alien;
 import game.tools.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,7 +51,12 @@ public class StartMenuLayout extends Pane {
 		menu.setSpacing(5);
 		menu.relocate(250, 260);
 		
+		Alien alien = new Alien();
+		Controller controls = new Controller();
+		
+		alien.buildControls(controls);
+		
 		// Add background and menu to this container
-		this.getChildren().addAll(BACKGROUND, menu);
+		this.getChildren().addAll(BACKGROUND, menu, alien);
 	}
 }
