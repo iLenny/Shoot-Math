@@ -26,7 +26,7 @@ the owners are:
   - Adobe Photoshop  (for graphics)
   - Inkscape  (for graphics)
   
-Are you guys planning on making money out of this project?
+<strong>Are you guys planning on making money out of this project?</strong>
   - We never thought about that, we only wanted to create something for fun and to help children
     learn math in fun way.
 
