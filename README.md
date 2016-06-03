@@ -7,6 +7,7 @@ Shoot Math, a desktop platform 2D side scrolling game that aims to expose childr
       Q U E S T I O N S
 ******************************
 Who owns this project?
+   
    the owners are:
       - Leibniz H. Berihuete 
       - Issac Yuu
