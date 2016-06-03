@@ -16,13 +16,16 @@ public class Controller {
 	// Default controls:
 	private static final KeyCode DEFAULT_RIGHT_KEY = KeyCode.RIGHT;
 	private static final KeyCode DEFAULT_LEFT_KEY = KeyCode.LEFT;
+	private static final KeyCode DEFAULT_DOWN_KEY = KeyCode.DOWN;
 	private static final KeyCode DEFAULT_JUMP_KEY = KeyCode.SPACE;
 	private static final KeyCode DEFAULT_WEAPON_KEY = KeyCode.W;
 	private static final KeyCode DEFAULT_SHOOT_KEY = KeyCode.S;
 	
+	
 	// Keys:
 	private KeyCode moveRightKey;
 	private KeyCode moveLeftKey;
+	private KeyCode moveDownKey;
 	private KeyCode jumpKey;
 	private KeyCode weaponKey;
 	private KeyCode shootKey;
@@ -32,6 +35,7 @@ public class Controller {
 	 * Initializes the keys with default values:
 	 * moveRightKey: RIGHT ARROW KEY
 	 * moveLeftKey: LEFT ARROW KEY
+	 * moveDownKey: DOWN ARROW KEY
 	 * jumpKey: SPACE KEY
 	 * weaponKey: W KEY
 	 * shootKey: S KEY
@@ -39,6 +43,7 @@ public class Controller {
 	public Controller() {
 		setMoveRightKey(DEFAULT_RIGHT_KEY);
 		setMoveLeftKey(DEFAULT_LEFT_KEY);
+		setMoveDownKey(DEFAULT_DOWN_KEY);
 		setJumpKey(DEFAULT_JUMP_KEY);
 		setWeaponKey(DEFAULT_WEAPON_KEY);
 		setShootKey(DEFAULT_SHOOT_KEY);
@@ -64,6 +69,14 @@ public class Controller {
 	 */
 	public void setMoveLeftKey(KeyCode key) {
 		this.moveLeftKey = key;
+	}
+	
+	/**
+	 * moveDownKey Setter:
+	 * @param key holds the key that makes the player get down on the floor.
+	 */
+	public void setMoveDownKey(KeyCode key) {
+		this.moveDownKey = key;
 	}
 	
 	/**
@@ -108,6 +121,14 @@ public class Controller {
 	 */
 	public KeyCode getMoveLeftKey() {
 		return moveLeftKey;
+	}
+	
+	/**
+	 * moveDownKey Getter:
+	 * @return the key that makes the player to get down on the floor;
+	 */
+	public KeyCode getMoveDownKey() {
+		return moveDownKey;
 	}
 	
 	/**

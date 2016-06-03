@@ -32,13 +32,18 @@ public abstract class Character extends Pane {
 	private double hp;
 	
 	// For character control
+	private boolean weaponOn = false;
 	private boolean allowToMove = true;
 	private String moveKey = "";
+	private boolean allowToPressDown = true;
 	
 	// For character animation:
 	private KeyFrame keyFrame;
 	private Timeline timeline;
 	private double FPS;
+	
+	private double currentYPos = 0;
+	private double currentXPos = 0;
 	
 	
 /* ******************
@@ -115,6 +120,15 @@ public abstract class Character extends Pane {
 		this.FPS = FPS;
 	}
 	
+	/**
+	 * weaponOn Setter:
+	 * @param weaponOn holds the boolean value of whether the player has
+	 * a weapon on his/her hand or not.
+	 */
+	public void setWeaponOn(boolean weaponOn) {
+		this.weaponOn = weaponOn;
+	}
+	
 /* *********************
  * 	    ACCESSORS
  * *********************/
@@ -166,6 +180,14 @@ public abstract class Character extends Pane {
 		return timeline;
 	}
 	
+	/**
+	 * weaponOn Getter
+	 * @return whether the player has a weapon on his hand or not.
+	 */
+	public boolean getWeaponOn() {
+		return weaponOn;
+	}
+	
 /* ********************
  * 	     OTHERS
  * ********************/
@@ -179,6 +201,7 @@ public abstract class Character extends Pane {
 	public void buildControls(Controller controller) {
 		KeyCode RIGHT = controller.getMoveRightKey();
 		KeyCode LEFT = controller.getMoveLeftKey();
+		KeyCode DOWN = controller.getMoveDownKey();
 		KeyCode JUMP = controller.getJumpKey();
 		KeyCode WEAPON = controller.getWeaponKey();
 		KeyCode SHOOT = controller.getShootKey();
@@ -186,7 +209,7 @@ public abstract class Character extends Pane {
 		// PRESSED Key functionalities
 		this.setOnKeyPressed(e-> {
 			// RIGHT
-			if(e.getCode().equals(RIGHT)) {
+			if(e.getCode().equals(RIGHT) && allowToPressDown) {
 				moveKey = "RIGHT";
 				allowToMove = true;
 				handleRightScale();
@@ -194,11 +217,23 @@ public abstract class Character extends Pane {
 			}
 			
 			// LEFT
-			else if(e.getCode().equals(LEFT)) {
+			else if(e.getCode().equals(LEFT) && allowToPressDown) {
 				moveKey = "LEFT";
 				allowToMove = true;
 				handleLeftScale();
 				timeline.play();
+			}
+			
+			// DOWN
+			else if(e.getCode().equals(DOWN)) {				
+				if(allowToPressDown) {
+					currentXPos = this.getTranslateX();
+					currentYPos = this.getTranslateY();
+					allowToPressDown = false;
+					handleDownSprite();
+					
+				}
+				timeline.pause();
 			}
 			
 			// JUMP
@@ -208,7 +243,12 @@ public abstract class Character extends Pane {
 			
 			// WEAPON
 			if(e.getCode().equals(WEAPON)) {
-				//TODO switch weapon method
+				if(weaponOn)
+					weaponOn = false;
+				else 
+					weaponOn = true;
+				
+				timeline.play();
 			}
 			
 			// SHOOT
@@ -220,7 +260,7 @@ public abstract class Character extends Pane {
 		// RELEASED Key functionalities
 		this.setOnKeyReleased(e->{
 			// RIGHT
-			if(e.getCode().equals(RIGHT)) {
+			if(e.getCode().equals(RIGHT) && allowToPressDown) {
 				moveKey = "";
 				allowToMove = false;
 				resetSprite();
@@ -229,11 +269,20 @@ public abstract class Character extends Pane {
 			}
 			
 			// LEFT
-			else if(e.getCode().equals(LEFT)) {
+			else if(e.getCode().equals(LEFT) && allowToPressDown) {
 				moveKey = "";
 				allowToMove = false;
 				resetSprite();
 				timeline.pause();
+			}
+			
+			// DOWN
+			else if(e.getCode().equals(DOWN)) {
+				this.setTranslateY(currentYPos);
+				this.setTranslateX(currentXPos);
+				resetSprite();
+				timeline.pause();
+				allowToPressDown = true;
 			}
 			
 			// JUMP
@@ -244,6 +293,8 @@ public abstract class Character extends Pane {
 			
 			// WEAPON
 			if(e.getCode().equals(WEAPON)) {
+				if(!e.getCode().equals(RIGHT)|| !e.getCode().equals(LEFT))
+					resetSprite();
 				timeline.pause();
 			}
 			
@@ -287,6 +338,12 @@ public abstract class Character extends Pane {
 	protected abstract void handleSprites();	  
 	
 	/**
+	 * handles down sprite
+	 */
+	protected abstract void handleDownSprite();
+	
+	
+	/**
 	 * handleLeftScale Method:
 	 * Sprites may come with 1 direction scale only, therefore you can handle
 	 * the left scale here. 
@@ -299,6 +356,8 @@ public abstract class Character extends Pane {
 	 * the right scale here. 
 	 */
 	protected abstract void handleRightScale();
+	
+	
 	
 	/**
 	 * resetSprite
