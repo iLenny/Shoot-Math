@@ -28,6 +28,8 @@ public class Game extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		// TODO CONNECT THE REST OF THE SCENES
+		
 		//Initialize:
 		startMenuScene = new StartMenuScene(WINDOW_WIDTH, WINDOW_HEIGHT);		
 		
