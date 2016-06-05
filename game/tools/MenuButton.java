@@ -373,7 +373,7 @@ public class MenuButton extends StackPane {
 			
 			// Moves the menu button 10 pixels to the right
 			TranslateTransition tt = new TranslateTransition(Duration.millis(100), this);
-			tt.setByX(10);
+			tt.setByX(20);
 			tt.play();
 			
 			// Fades the background of the menu button by 30%

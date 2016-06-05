@@ -36,6 +36,7 @@ public abstract class Character extends Pane {
 	private boolean allowToMove = true;
 	private String moveKey = "";
 	private boolean allowToPressDown = true;
+	private boolean onTheGround = false;
 	
 	// For character animation:
 	private KeyFrame keyFrame;
@@ -44,6 +45,8 @@ public abstract class Character extends Pane {
 	
 	private double currentYPos = 0;
 	private double currentXPos = 0;
+	
+	private Controller currentControls;
 	
 	
 /* ******************
@@ -188,6 +191,22 @@ public abstract class Character extends Pane {
 		return weaponOn;
 	}
 	
+	
+	
+	public boolean getOnTheGround() {
+		return onTheGround;
+	}
+	
+	/**
+	 * currentControls Getter;
+	 * @return the controls of this character which contains the key settings
+	 */
+	public  Controller getCurrentControls() {
+		return currentControls;
+	}
+	
+	
+	
 /* ********************
  * 	     OTHERS
  * ********************/
@@ -199,6 +218,7 @@ public abstract class Character extends Pane {
 	 * may not have been changed by the users.
 	 */
 	public void buildControls(Controller controller) {
+		currentControls = controller;
 		KeyCode RIGHT = controller.getMoveRightKey();
 		KeyCode LEFT = controller.getMoveLeftKey();
 		KeyCode DOWN = controller.getMoveDownKey();
@@ -231,6 +251,7 @@ public abstract class Character extends Pane {
 					currentYPos = this.getTranslateY();
 					allowToPressDown = false;
 					handleDownSprite();
+					onTheGround = true;
 					
 				}
 				timeline.pause();
@@ -279,10 +300,11 @@ public abstract class Character extends Pane {
 			// DOWN
 			else if(e.getCode().equals(DOWN)) {
 				this.setTranslateY(currentYPos);
-				this.setTranslateX(currentXPos);
-				resetSprite();
+				this.setTranslateX(currentXPos);				
 				timeline.pause();
 				allowToPressDown = true;
+				onTheGround = false;
+				resetSprite();
 			}
 			
 			// JUMP
@@ -292,9 +314,10 @@ public abstract class Character extends Pane {
 			}
 			
 			// WEAPON
-			if(e.getCode().equals(WEAPON)) {
+			if(e.getCode().equals(WEAPON) && !e.getCode().equals(DOWN)) {
 				if(!e.getCode().equals(RIGHT)|| !e.getCode().equals(LEFT))
 					resetSprite();
+				
 				timeline.pause();
 			}
 			
