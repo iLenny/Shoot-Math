@@ -16,9 +16,10 @@ import javafx.scene.image.ImageView;
  * sprites and animation.
  */
 public class Alien extends Character {
+		
 	// Sprite Image;
 	private static final Image SPRITE = 
-			new Image(Alien.class.getResourceAsStream("../images/ShootMathSprite.png"));;
+			new Image(Alien.class.getResourceAsStream("../images/ShootMathSprite.png"));;		
 	
 	// For animation:
 	private final int DELAY_COUNT = 90;
@@ -140,6 +141,110 @@ public class Alien extends Character {
 		});
 	}
 	
+	private void spriteHandler(int count) {
+		String moveKey = this.getMoveKey();
+		boolean weaponOn = this.getWeaponOn();
+		
+		
+		/* -------------- ARM --------------- */
+		// ARM POSITION: RIGHT
+		final int ARM_RIGHT_X = 23;
+		final int ARM_RIGHT_Y = 90;
+		
+		// ARM POSITION: LEFT
+		final int ARM_LEFT_X = 10;
+		final int ARM_LEFT_Y = 90;
+		
+		// ARM POSITION: DOWN-RIGHT
+		final int ARM_DOWN_RIGHT_X = 60;
+		final int ARM_DOWN_RIGHT_Y = 70;
+		
+		// ARM POSITION: DOWN-LEFT
+		final int ARM_DOWN_LEFT_X = 25;
+		final int ARM_DOWN_LEFT_Y = 70;
+		
+		
+		/* -------------- WEAPON --------------- */	
+		// WEAPON POSITION: RIGHT
+		final int WEAPON_RIGHT_X = 40;
+		final int WEAPON_RIGHT_Y = 85;
+		
+		// WEAPON POSITION: LEFT
+		final int WEAPON_LEFT_X = -25;
+		final int WEAPON_LEFT_Y = 85;
+		
+		// WEAPON POSITION: DOWN-RIGHT
+		final int WEAPON_DOWN_RIGHT_X = 80;
+		final int WEAPON_DOWN_RIGHT_Y = 65;
+		
+		// WEAPON POSITION: DOWN-LEFT
+		final int WEAPON_DOWN_LEFT_X = -10;
+		final int WEAPON_DOWN_LEFT_Y = 65;
+		
+		// If user press WEAPON key, make arm & weapon visible:
+		if(weaponOn) {
+			arm.setVisible(true);
+			weapon.setVisible(true);
+		}
+		else {
+			arm.setVisible(false);
+			weapon.setVisible(false);
+		}
+		
+		
+		switch(moveKey) {
+		case "RIGHT":
+			// display the character standing up with a weapon (if the weapon is on).
+			character.setViewport(weaponOn ? frameW[count]:frame[count]);   
+			arm.relocate(ARM_RIGHT_X, ARM_RIGHT_Y);
+			weapon.relocate(WEAPON_RIGHT_X, WEAPON_RIGHT_Y);					
+			break;
+			
+			
+		case "LEFT":
+			// display the character standing up with a weapon (if the weapon is on).
+			character.setViewport(weaponOn ? frameW[count]:frame[count]);   
+			arm.relocate(ARM_LEFT_X,  ARM_LEFT_Y);
+			weapon.relocate(WEAPON_LEFT_X, WEAPON_LEFT_Y);				
+			break;
+			
+			
+		case "DOWN":
+			// display the character getting down with a weapon (if the weapon is on).
+			character.setViewport(weaponOn ? frameDownW:frameDown);
+			if(character.getScaleX() == 1) {
+				arm.relocate(ARM_DOWN_RIGHT_X,  ARM_DOWN_RIGHT_Y);
+				weapon.relocate(WEAPON_DOWN_RIGHT_X, WEAPON_DOWN_RIGHT_Y);
+			}
+			else {
+				arm.relocate(ARM_DOWN_LEFT_X,  ARM_DOWN_LEFT_Y);
+				weapon.relocate(WEAPON_DOWN_LEFT_X, WEAPON_DOWN_LEFT_Y);
+			}			
+			break;
+			
+			
+		default:
+			// display the character standing up with a weapon (if the weapon is on)
+			character.setViewport(weaponOn ? frameW[count]:frame[count]); 
+			
+			if(character.getScaleX() == 1) {
+				arm.relocate(ARM_RIGHT_X,  ARM_RIGHT_Y);
+				weapon.relocate(WEAPON_RIGHT_X, WEAPON_RIGHT_Y);
+			}
+			else {
+				arm.relocate(ARM_LEFT_X,  ARM_LEFT_Y);
+				weapon.relocate(WEAPON_LEFT_X, WEAPON_LEFT_Y);
+			}
+			
+			  
+			break;
+		}
+		
+			
+	}
+	
+	
+	
 	
 	
 	/* ************************
@@ -161,18 +266,8 @@ public class Alien extends Character {
 			}
 			else {
 				spriteCount = 0;
-			}
-			
-			
-			if(this.getWeaponOn()) {
-				// change SPRITE:
-				character.setViewport(frameW[spriteCount]);
-			}
-			else {
-				// change SPRITE:
-				character.setViewport(frame[spriteCount]);
-			}
-			
+			}			
+			spriteHandler(spriteCount);		
 			
 			// set delay back to its original count
 			delay = DELAY_COUNT;
@@ -189,7 +284,9 @@ public class Alien extends Character {
 	 */
 	@Override
 	protected void handleLeftScale() {
-		this.setScaleX(-1);
+		character.setScaleX(-1);
+		arm.setScaleX(-1);
+		weapon.setScaleX(-1);
 		
 	}
 
@@ -200,7 +297,9 @@ public class Alien extends Character {
 	 */
 	@Override
 	protected void handleRightScale() {
-		this.setScaleX(1);
+		character.setScaleX(1);
+		arm.setScaleX(1);
+		weapon.setScaleX(1);
 	}
 
 	/**
@@ -211,64 +310,12 @@ public class Alien extends Character {
 	@Override
 	protected void resetSprite() {
 		spriteCount = 0;
-		if(this.getWeaponOn()) {
-			
-			// Set arm & weapon visible:
-			arm.setVisible(true);
-			weapon.setVisible(true);
-			
-			if(!getOnTheGround()) {
-				character.setViewport(frameW[spriteCount]);				
-				
-				// relocate arm & weapon:
-				arm.relocate(23, 90);			
-				weapon.relocate(40, 85);
-			}
-			else {
-				character.setViewport(frameDownW);
-				
-				// relocate arm & weapon:
-				arm.relocate(60, 70);				
-				weapon.relocate(80, 65);
-			}
-			
-		}
-		else {
-			// Make arm & weapon disappear:
-			arm.setVisible(false);
-			weapon.setVisible(false);
-			
-			if(!getOnTheGround()) {
-				character.setViewport(frame[spriteCount]);				
-			}
-			else {
-				character.setViewport(frameDown);
-			}
-			
-		}
+		spriteHandler(spriteCount);
 	}
 
 	@Override
 	protected void handleDownSprite() {
-		if(this.getWeaponOn()) {
-			character.setViewport(frameDownW);
-			
-			// Set arm & weapon visible:
-			arm.setVisible(true);
-			weapon.setVisible(true);
-			
-			// relocate arm & weapon:
-			arm.relocate(60, 70);			
-			weapon.relocate(80, 65);
-		}
-		else {
-			character.setViewport(frameDown);
-			
-			// Make arm & weapon disappear:
-			arm.setVisible(false);
-			weapon.setVisible(false);
-			
-		}
+		spriteHandler(0);
 		
 		// In order to make the character get down:
 		this.setTranslateX(this.getTranslateX()-25);

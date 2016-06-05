@@ -215,6 +215,10 @@ public abstract class Character extends Pane {
 		return currentControls;
 	}
 	
+	public String getMoveKey() {
+		return moveKey;
+	}
+	
 	
 	
 /* ********************
@@ -257,6 +261,7 @@ public abstract class Character extends Pane {
 			// DOWN
 			else if(e.getCode().equals(DOWN)) {				
 				if(allowToPressDown) {
+					moveKey ="DOWN";
 					currentXPos = this.getTranslateX();
 					currentYPos = this.getTranslateY();
 					allowToPressDown = false;
@@ -309,6 +314,7 @@ public abstract class Character extends Pane {
 			
 			// DOWN
 			else if(e.getCode().equals(DOWN)) {
+				moveKey = "";
 				this.setTranslateY(currentYPos);
 				this.setTranslateX(currentXPos);				
 				timeline.pause();
