@@ -5,13 +5,14 @@ import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
  * 
  * @author Leibniz H. Berihuete
  * Date Started: 6/2/2016 6:35 PM
- * Last Modification: 6/2/2016 8:30 PM
+ * Last Modification: 6/5/2016 9:00 PM
  * 
  * Character class
  *  The purpose of this class is to build all the fundamental features of
@@ -43,10 +44,19 @@ public abstract class Character extends Pane {
 	private Timeline timeline;
 	private double FPS;
 	
+	// In order to save the character's position
 	private double currentYPos = 0;
-	private double currentXPos = 0;
+	private double currentXPos = 0;	
 	
+	// The controls that move the character:
 	private Controller currentControls;
+	
+	// Body parts of the character:
+	protected Rectangle head;
+	protected Rectangle body;
+	protected Rectangle feet;
+	
+	
 	
 	
 /* ******************

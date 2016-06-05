@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
  * 
  * @author Leibniz H. Berihuete
  * Date Started: 6/3/2016 7:34 AM
- * Last Modification: 6/3/2016 8:31 AM
+ * Last Modification: 6/5/2016 9:18 AM
  * 
  * Alien Class
  * Alien is a character class, that contains its own
@@ -20,7 +20,7 @@ public class Alien extends Character {
 	private static final Image SPRITE = 
 			new Image(Alien.class.getResourceAsStream("../images/ShootMathSprite.png"));;
 	
-	// Delay count for SPRITE animation:
+	// For animation:
 	private final int DELAY_COUNT = 90;
 	private int spriteCount = 0;
 	private int delay = DELAY_COUNT;	
@@ -31,55 +31,43 @@ public class Alien extends Character {
 	// For walking SPRITE with weapon:
 	private Rectangle2D [] frameW = new Rectangle2D[12];
 	
-	// For getting down:
+	// For getting-down:
 	private Rectangle2D frameDown;
 	
-	// For getting down with weapon:
+	// For getting-down with weapon:
 	private Rectangle2D frameDownW;
 	
 	// arm for weapon:
 	private ImageView arm;
 	
-	// for weapon
+	// the weapon itself:
 	private Weapon weapon;
 	
 	
+
+	
+/* ***********************************
+ * 	        CONSTRUCTORS
+ * ***********************************/
 	/**
 	 * Default Constructor
 	 * This constructor initializes and seperates all the sprites into frames
 	 */
 	public Alien() { 
 		initializeSprites();
-		
-		
-		
-		
-		
+		buildControls();
 
-		// set SPRITE image to this images
+		// set SPRITE image to this character
 		character.setImage(SPRITE);
 		
-		// set the view port of the character to its initial SPRITE:
+		// this will display the first frame of the character.
 		character.setViewport(frame[0]);
+		
+		// Add the weapon and the arm to this container
 		this.getChildren().addAll(weapon,arm);
 		
-		this.setSpeed(11);
 		
-		this.setOnKeyPressed(e-> {
-			if(this.getCurrentControls()!=null) {
-				Controller controls = getCurrentControls();
-				// If weapon switch is pressed
-				if(e.getCode().equals(controls.getWeaponKey()) && !e.getCode().equals(controls.getMoveDownKey())) {
-					if(this.getWeaponOn()) {
-						arm.setVisible(true);
-						arm.relocate(23, 90);
-					}
-					
-				}
-				
-				
-			}
-		});
+	
 	}
 	
 	
@@ -130,6 +118,27 @@ public class Alien extends Character {
 		
 	}
 	
+	/* **************************
+	 *        OTHERS
+	 * **************************/
+	private void buildControls() {
+		// If Key pressed
+		this.setOnKeyPressed(e-> {
+			if(this.getCurrentControls()!=null) {
+				Controller controls = getCurrentControls();
+				
+				// If weapon switch is pressed
+				if(e.getCode().equals(controls.getWeaponKey()) && 
+				  !e.getCode().equals(controls.getMoveDownKey())) {
+					
+					if(this.getWeaponOn()) {
+						arm.setVisible(true);
+						arm.relocate(23, 90);
+					}					
+				}			
+			}
+		});
+	}
 	
 	
 	
@@ -137,6 +146,11 @@ public class Alien extends Character {
 	 *    OVERRIDE METHODS:
 	 * ***********************/	
 	
+	/**
+	 * handleSprites
+	 * Here we specify how is this character is going
+	 * to change sprites while walking, or getting-down 
+	 */
 	@Override
 	protected void handleSprites() {
 		// When delay equals zero, it will change sprites
@@ -168,49 +182,67 @@ public class Alien extends Character {
 		}	
 	}
 	
+	/**
+	 * handleLeftScale
+	 * Here we specify what scale the character is going to 
+	 * be when the character is moving towards the left
+	 */
 	@Override
 	protected void handleLeftScale() {
 		this.setScaleX(-1);
 		
 	}
 
+	/**
+	 * handleRightScale
+	 * Here we specify what scale the character is going to 
+	 * be when the character is moving towards the right
+	 */
 	@Override
 	protected void handleRightScale() {
 		this.setScaleX(1);
 	}
 
+	/**
+	 * resetSprite
+	 * When a key is released from being pressed, the sprite will
+	 * reset, the character will go back to standing position
+	 */
 	@Override
 	protected void resetSprite() {
 		spriteCount = 0;
 		if(this.getWeaponOn()) {
+			
+			// Set arm & weapon visible:
+			arm.setVisible(true);
+			weapon.setVisible(true);
+			
 			if(!getOnTheGround()) {
-				character.setViewport(frameW[spriteCount]);
-				arm.setVisible(true);
-				arm.relocate(23, 90);
+				character.setViewport(frameW[spriteCount]);				
 				
-				weapon.setVisible(true);
+				// relocate arm & weapon:
+				arm.relocate(23, 90);			
 				weapon.relocate(40, 85);
 			}
 			else {
 				character.setViewport(frameDownW);
-				arm.setVisible(true);
-				arm.relocate(60, 70);
 				
-				weapon.setVisible(true);
+				// relocate arm & weapon:
+				arm.relocate(60, 70);				
 				weapon.relocate(80, 65);
 			}
 			
 		}
 		else {
+			// Make arm & weapon disappear:
+			arm.setVisible(false);
+			weapon.setVisible(false);
+			
 			if(!getOnTheGround()) {
-				character.setViewport(frame[spriteCount]);
-				arm.setVisible(false);
-				weapon.setVisible(false);
+				character.setViewport(frame[spriteCount]);				
 			}
 			else {
 				character.setViewport(frameDown);
-				arm.setVisible(false);
-				weapon.setVisible(false);
 			}
 			
 		}
@@ -220,19 +252,25 @@ public class Alien extends Character {
 	protected void handleDownSprite() {
 		if(this.getWeaponOn()) {
 			character.setViewport(frameDownW);
+			
+			// Set arm & weapon visible:
 			arm.setVisible(true);
-			arm.relocate(60, 70);
-			
-			
 			weapon.setVisible(true);
+			
+			// relocate arm & weapon:
+			arm.relocate(60, 70);			
 			weapon.relocate(80, 65);
 		}
 		else {
 			character.setViewport(frameDown);
+			
+			// Make arm & weapon disappear:
 			arm.setVisible(false);
 			weapon.setVisible(false);
 			
 		}
+		
+		// In order to make the character get down:
 		this.setTranslateX(this.getTranslateX()-25);
 		this.setTranslateY(this.getTranslateY()+70);
 		
