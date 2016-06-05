@@ -6,6 +6,7 @@ import game.tools.MenuButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -38,7 +39,7 @@ public class StartMenuLayout extends Pane {
 	 */
 	public StartMenuLayout() {
 		// Initialize menu buttons:
-		MenuButton startButton = new MenuButton("START", 200, 40);
+		MenuButton startButton = new MenuButton("START");
 		MenuButton settingsButton = new MenuButton("SETTINGS");
 		MenuButton exitButton = new MenuButton("EXIT");
 		
@@ -49,7 +50,7 @@ public class StartMenuLayout extends Pane {
 		// Create Menu
 		VBox menu = new VBox(startButton, settingsButton, exitButton);
 		menu.setSpacing(5);
-		menu.relocate(250, 260);
+		menu.relocate(310, 250);
 		
 		Alien alien = new Alien();
 		Controller controls = new Controller();

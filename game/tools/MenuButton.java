@@ -115,7 +115,6 @@ public class MenuButton extends StackPane {
 		setHoverColor(HOVER_COLOR);
 		setPressedColor(PRESSED_COLOR);
 		
-		this.setRotate(this.getRotate()+5);
 		
 		buildButtonFunctionality();
 		
@@ -193,7 +192,7 @@ public class MenuButton extends StackPane {
 		setHoverColor(HOVER_COLOR);
 		setPressedColor(PRESSED_COLOR);
 		
-		this.setRotate(this.getRotate()+5);
+		this.setRotate(this.getRotate());
 		
 		buildButtonFunctionality();
 		
@@ -402,6 +401,7 @@ public class MenuButton extends StackPane {
 		// When mouse presses this button
 		this.setOnMousePressed(e-> {
 			setRectBackgroundColor(pressedColor);
+			
 			
 		});
 		
