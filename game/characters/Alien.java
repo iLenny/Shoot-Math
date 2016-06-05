@@ -45,6 +45,101 @@ public class Alien extends Character {
 	private Weapon weapon;
 	
 	
+	/* -------------- ARM --------------- */
+	// ARM POSITION: RIGHT
+	final int ARM_RIGHT_X = 23;
+	final int ARM_RIGHT_Y = 90;
+	
+	// ARM POSITION: LEFT
+	final int ARM_LEFT_X = 10;
+	final int ARM_LEFT_Y = 90;
+	
+	// ARM POSITION: DOWN-RIGHT
+	final int ARM_DOWN_RIGHT_X = 60;
+	final int ARM_DOWN_RIGHT_Y = 70;
+	
+	// ARM POSITION: DOWN-LEFT
+	final int ARM_DOWN_LEFT_X = 25;
+	final int ARM_DOWN_LEFT_Y = 70;
+	
+	
+	/* -------------- WEAPON --------------- */	
+	// WEAPON POSITION: RIGHT
+	final int WEAPON_RIGHT_X = 40;
+	final int WEAPON_RIGHT_Y = 85;
+	
+	// WEAPON POSITION: LEFT
+	final int WEAPON_LEFT_X = -25;
+	final int WEAPON_LEFT_Y = 85;
+	
+	// WEAPON POSITION: DOWN-RIGHT
+	final int WEAPON_DOWN_RIGHT_X = 80;
+	final int WEAPON_DOWN_RIGHT_Y = 65;
+	
+	// WEAPON POSITION: DOWN-LEFT
+	final int WEAPON_DOWN_LEFT_X = -10;
+	final int WEAPON_DOWN_LEFT_Y = 65;
+	
+	
+	/* -------------- HEAD --------------- */	
+	// HEAD POSITION: RIGHT
+	final int HEAD_RIGHT_X = 30;
+	final int HEAD_RIGHT_Y = 35;
+	
+	// HEAD POSITION: LEFT
+	final int HEAD_LEFT_X = 30;
+	final int HEAD_LEFT_Y = 50;
+	
+	// HEAD POSITION: DOWN-RIGHT
+	final int HEAD_DOWN_RIGHT_X = 75;
+	final int HEAD_DOWN_RIGHT_Y = 40;
+	
+	// HEAD POSITION: DOWN-LEFT
+	final int HEAD_DOWN_LEFT_X = 20;
+	final int HEAD_DOWN_LEFT_Y = 45;
+	
+	
+	
+	/* -------------- BODY --------------- */	
+	// BODY POSITION: RIGHT
+	final int BODY_RIGHT_X = 15;
+	final int BODY_RIGHT_Y = 42;
+	
+	// BODY POSITION: LEFT
+	final int BODY_LEFT_X = 15;
+	final int BODY_LEFT_Y = 42;
+	
+	// BODY POSITION: DOWN-RIGHT
+	final int BODY_DOWN_RIGHT_X = 45;
+	final int BODY_DOWN_RIGHT_Y = 25;
+	
+	// BODY POSITION: DOWN-LEFT
+	final int BODY_DOWN_LEFT_X = 25;
+	final int BODY_DOWN_LEFT_Y = 25;
+	
+	
+	
+	/* -------------- FEET --------------- */	
+	// FEET POSITION: RIGHT
+	final int FEET_RIGHT_X = 25;
+	final int FEET_RIGHT_Y = 55;
+	
+	// FEET POSITION: LEFT
+	final int FEET_LEFT_X = 25;
+	final int FEET_LEFT_Y = 55;
+	
+	// FEET POSITION: DOWN-RIGHT
+	final int FEET_DOWN_RIGHT_X = 5;
+	final int FEET_DOWN_RIGHT_Y = 0;
+	
+	// FEET POSITION: DOWN-LEFT
+	final int FEET_DOWN_LEFT_X = 45;
+	final int FEET_DOWN_LEFT_Y = 0;
+	
+	private double headWidth, headHeight;
+	private double bodyWidth, bodyHeight;
+	private double feetWidth, feetHeight;
+	
 
 	
 /* ***********************************
@@ -56,7 +151,10 @@ public class Alien extends Character {
 	 */
 	public Alien() { 
 		initializeSprites();
-		buildControls();
+		buildControls();		
+		fixBodyParts();
+
+		
 
 		// set SPRITE image to this character
 		character.setImage(SPRITE);
@@ -119,9 +217,6 @@ public class Alien extends Character {
 		
 	}
 	
-	/* **************************
-	 *        OTHERS
-	 * **************************/
 	private void buildControls() {
 		// If Key pressed
 		this.setOnKeyPressed(e-> {
@@ -145,42 +240,6 @@ public class Alien extends Character {
 		String moveKey = this.getMoveKey();
 		boolean weaponOn = this.getWeaponOn();
 		
-		
-		/* -------------- ARM --------------- */
-		// ARM POSITION: RIGHT
-		final int ARM_RIGHT_X = 23;
-		final int ARM_RIGHT_Y = 90;
-		
-		// ARM POSITION: LEFT
-		final int ARM_LEFT_X = 10;
-		final int ARM_LEFT_Y = 90;
-		
-		// ARM POSITION: DOWN-RIGHT
-		final int ARM_DOWN_RIGHT_X = 60;
-		final int ARM_DOWN_RIGHT_Y = 70;
-		
-		// ARM POSITION: DOWN-LEFT
-		final int ARM_DOWN_LEFT_X = 25;
-		final int ARM_DOWN_LEFT_Y = 70;
-		
-		
-		/* -------------- WEAPON --------------- */	
-		// WEAPON POSITION: RIGHT
-		final int WEAPON_RIGHT_X = 40;
-		final int WEAPON_RIGHT_Y = 85;
-		
-		// WEAPON POSITION: LEFT
-		final int WEAPON_LEFT_X = -25;
-		final int WEAPON_LEFT_Y = 85;
-		
-		// WEAPON POSITION: DOWN-RIGHT
-		final int WEAPON_DOWN_RIGHT_X = 80;
-		final int WEAPON_DOWN_RIGHT_Y = 65;
-		
-		// WEAPON POSITION: DOWN-LEFT
-		final int WEAPON_DOWN_LEFT_X = -10;
-		final int WEAPON_DOWN_LEFT_Y = 65;
-		
 		// If user press WEAPON key, make arm & weapon visible:
 		if(weaponOn) {
 			arm.setVisible(true);
@@ -197,7 +256,12 @@ public class Alien extends Character {
 			// display the character standing up with a weapon (if the weapon is on).
 			character.setViewport(weaponOn ? frameW[count]:frame[count]);   
 			arm.relocate(ARM_RIGHT_X, ARM_RIGHT_Y);
-			weapon.relocate(WEAPON_RIGHT_X, WEAPON_RIGHT_Y);					
+			weapon.relocate(WEAPON_RIGHT_X, WEAPON_RIGHT_Y);
+			// relocate body parts:
+			head.relocate(HEAD_RIGHT_X, HEAD_RIGHT_Y);		
+			body.relocate(BODY_RIGHT_X, BODY_RIGHT_Y);
+			feet.relocate(FEET_RIGHT_X, FEET_RIGHT_Y);
+			
 			break;
 			
 			
@@ -205,7 +269,11 @@ public class Alien extends Character {
 			// display the character standing up with a weapon (if the weapon is on).
 			character.setViewport(weaponOn ? frameW[count]:frame[count]);   
 			arm.relocate(ARM_LEFT_X,  ARM_LEFT_Y);
-			weapon.relocate(WEAPON_LEFT_X, WEAPON_LEFT_Y);				
+			weapon.relocate(WEAPON_LEFT_X, WEAPON_LEFT_Y);
+			// relocate body parts:
+			head.relocate(HEAD_LEFT_X, HEAD_LEFT_Y);		
+			body.relocate(BODY_LEFT_X, BODY_LEFT_Y);
+			feet.relocate(FEET_LEFT_X, FEET_LEFT_Y);
 			break;
 			
 			
@@ -215,11 +283,26 @@ public class Alien extends Character {
 			if(character.getScaleX() == 1) {
 				arm.relocate(ARM_DOWN_RIGHT_X,  ARM_DOWN_RIGHT_Y);
 				weapon.relocate(WEAPON_DOWN_RIGHT_X, WEAPON_DOWN_RIGHT_Y);
+				// relocate body parts:
+				head.relocate(HEAD_DOWN_RIGHT_X, HEAD_DOWN_RIGHT_Y);		
+				body.relocate(BODY_DOWN_RIGHT_X, BODY_DOWN_RIGHT_Y);
+				feet.relocate(FEET_DOWN_RIGHT_X, FEET_DOWN_RIGHT_Y);
 			}
 			else {
 				arm.relocate(ARM_DOWN_LEFT_X,  ARM_DOWN_LEFT_Y);
 				weapon.relocate(WEAPON_DOWN_LEFT_X, WEAPON_DOWN_LEFT_Y);
-			}			
+				// relocate body parts:
+				head.relocate(HEAD_DOWN_LEFT_X, HEAD_DOWN_LEFT_Y);		
+				body.relocate(BODY_DOWN_LEFT_X, BODY_DOWN_LEFT_Y);
+				feet.relocate(FEET_DOWN_LEFT_X, FEET_DOWN_LEFT_Y);
+			}
+			
+			head.setWidth(headWidth);
+			head.setHeight(headHeight);
+			body.setWidth(50);
+			body.setHeight(15);
+			feet.setWidth(feetWidth+50);
+			feet.setHeight(feetHeight-10);
 			break;
 			
 			
@@ -230,17 +313,57 @@ public class Alien extends Character {
 			if(character.getScaleX() == 1) {
 				arm.relocate(ARM_RIGHT_X,  ARM_RIGHT_Y);
 				weapon.relocate(WEAPON_RIGHT_X, WEAPON_RIGHT_Y);
+				// relocate body parts:
+				head.relocate(HEAD_RIGHT_X, HEAD_RIGHT_Y);		
+				body.relocate(BODY_RIGHT_X, BODY_RIGHT_Y);
+				feet.relocate(FEET_RIGHT_X, FEET_RIGHT_Y);
+				
+				
 			}
 			else {
 				arm.relocate(ARM_LEFT_X,  ARM_LEFT_Y);
 				weapon.relocate(WEAPON_LEFT_X, WEAPON_LEFT_Y);
+				
+				// relocate body parts:
+				head.relocate(HEAD_LEFT_X, HEAD_LEFT_Y);		
+				body.relocate(BODY_LEFT_X, BODY_LEFT_Y);
+				feet.relocate(FEET_LEFT_X, FEET_LEFT_Y);
 			}
 			
-			  
+			head.setWidth(headWidth);
+			head.setHeight(headHeight);
+			body.setWidth(bodyWidth);
+			body.setHeight(bodyHeight);
+			feet.setWidth(feetWidth);
+			feet.setHeight(feetHeight);
+			
 			break;
 		}
 		
 			
+	}
+	
+	private void fixBodyParts() {
+		body.setWidth(body.getWidth()+5);
+		body.setHeight(body.getHeight()+10);
+		
+		headWidth = head.getWidth();
+		headHeight = head.getHeight();
+		
+		bodyWidth = body.getWidth();
+		bodyHeight = body.getHeight();
+		
+		feetWidth = feet.getWidth();
+		feetHeight = feet.getHeight();
+		
+		// relocate body parts:
+		head.relocate(HEAD_RIGHT_X, HEAD_RIGHT_Y);		
+		body.relocate(BODY_RIGHT_X, BODY_RIGHT_Y);
+		feet.relocate(FEET_RIGHT_X, FEET_RIGHT_Y);
+		
+		head.setVisible(false);
+		body.setVisible(false);
+		feet.setVisible(false);
 	}
 	
 	

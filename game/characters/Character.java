@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -82,11 +83,26 @@ public abstract class Character extends Pane {
 		setHP(DEFAULT_HP);
 		setFPS(DEFAULT_FPS);
 		
+		head= new Rectangle(30, 30);
+		head.setFill(Color.AQUA);
+		
+		
+		body = new Rectangle(30, 30);
+		body.setFill(Color.CHARTREUSE);
+		body.setTranslateY(40);
+		
+		feet = new Rectangle(30, 30);
+		feet.setTranslateY(80);
+		feet.setFill(Color.RED);
+		
+		
+		
+		
 		// builds player's animation
 		buildAnimation();
 
 		// Add to this pane:
-		this.getChildren().add(character);
+		this.getChildren().addAll(character, body, head, feet);
 	}
 	
 /* ********************
@@ -202,7 +218,10 @@ public abstract class Character extends Pane {
 	}
 	
 	
-	
+	/**
+	 * onTheGround Getter
+	 * @return whether the character is on the ground or not
+	 */
 	public boolean getOnTheGround() {
 		return onTheGround;
 	}
@@ -215,9 +234,39 @@ public abstract class Character extends Pane {
 		return currentControls;
 	}
 	
+	/**
+	 * moveKey Getter:
+	 * @return the key that moves the character either left, right or down
+	 */
 	public String getMoveKey() {
 		return moveKey;
 	}
+	
+	/**
+	 * head Getter
+	 * @return the rectangle that represents the head of the character
+	 */
+	public Rectangle getHead() {
+		return head;
+	}
+	
+	/**
+	 * body Getter
+	 * @return the rectangle that represents the body of the character
+	 */
+	public Rectangle getBody() {
+		return body;
+	}
+	
+	/**
+	 * feet Getter
+	 * @return the rectangle that represents the feet of the character
+	 */
+	public Rectangle getFeet() {
+		return feet;
+	}
+	
+	
 	
 	
 	

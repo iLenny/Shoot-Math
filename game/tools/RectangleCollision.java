@@ -6,7 +6,16 @@ import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import game.characters.Character;
-
+/**
+ * 
+ * @author Leibniz H. Berihuete
+ * Date Started: 6/4/2016 5:31 PM
+ * Last Modification: 6/5/2016 11:30 AM
+ * 
+ * RectangleCollision class
+ * A rectangle that can push the character left, right, up, or down, when collide
+ * with each other.
+ */
 public class RectangleCollision extends Rectangle {
 	// Default values:
 	private static final double DEFAULT_WIDTH = 50;
@@ -68,11 +77,25 @@ public class RectangleCollision extends Rectangle {
  *           OTHERS
  * *****************************/
 	public void buildCollisionWith(Character node) {
-		
+		Rectangle head = node.getHead();
+		Rectangle body = node.getBody();
+		Rectangle feet = node.getFeet();
 		
 		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), e-> {
 			Bounds thisBounds = this.localToScene(this.getBoundsInLocal());
-			Bounds nodeBounds = node.localToScene(node.getBoundsInLocal());
+			Bounds nodeBounds;
+			
+			
+			if(pushingDirection == PUSH_LEFT || pushingDirection == PUSH_RIGHT) {
+				nodeBounds = body.localToScene(body.getBoundsInLocal());
+			}
+			else if(pushingDirection == PUSH_DOWN) {
+				nodeBounds = head.localToScene(head.getBoundsInLocal());
+			}
+			else {
+				nodeBounds = feet.localToScene(feet.getBoundsInLocal());
+			}	
+			
 			if(thisBounds.intersects(nodeBounds)) {
 				push(pushingDirection, node);
 			}
