@@ -3,6 +3,7 @@ package game.scenes.layouts;
 import game.Controller;
 import game.characters.Alien;
 import game.tools.MenuButton;
+import game.tools.RectangleCollision;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -57,7 +58,10 @@ public class StartMenuLayout extends Pane {
 		
 		alien.buildControls(controls);
 		
+		RectangleCollision x = new RectangleCollision(RectangleCollision.PUSH_LEFT, 30, 120);
+		x.relocate(600, 40);
+		x.buildCollisionWith(alien);
 		// Add background and menu to this container
-		this.getChildren().addAll(BACKGROUND, menu, alien);
+		this.getChildren().addAll(BACKGROUND, menu, alien, x);
 	}
 }
