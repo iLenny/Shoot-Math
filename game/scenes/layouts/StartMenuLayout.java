@@ -62,6 +62,6 @@ public class StartMenuLayout extends Pane {
 		x.relocate(600, 40);
 		x.buildCollisionWith(alien);
 		// Add background and menu to this container
-		this.getChildren().addAll(BACKGROUND, menu, alien, x);
+		this.getChildren().addAll(BACKGROUND, menu, alien);
 	}
 }
