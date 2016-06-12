@@ -27,7 +27,7 @@ public class Map extends Pane {
 	private double gravity;
 	
 	// Lists:
-	private ArrayList<RectangleCollision> collisionObjList;
+	private ArrayList<RectangleCollision> collObjList;
 	private ArrayList<Node> nodeList;
 	
 	// Animation:
@@ -41,7 +41,13 @@ public class Map extends Pane {
  * 	   CONSTRUCTOR
  * **********************/
 	public Map(Character player) {
+		// Initialize:
+		collObjList = new ArrayList<>();
+		nodeList = new ArrayList<>();
 		setPlayer(player);
+		
+		
+		
 		buildAnimation();
 	}
 	
@@ -62,32 +68,101 @@ public class Map extends Pane {
 		return this.player;
 	}
 	
+	// Timeline Getter:
+	public Timeline getTimeline() {
+		return timeline;
+	}
+	
 	
 	
 /* **********************
  * 	   OTHERS
  * **********************/
+	/**
+	 * buildAnimation
+	 * This method builds the animation of the map--when the player is interacting with it
+	 */
 	private void buildAnimation() {
 		double endOfMap = mapStage.getImage().getWidth();
 		
+		// build frame:
 		KeyFrame keyframe = new KeyFrame(Duration.millis(1), e->{
 			String key = player.getMoveKey();
 			double playerX = player.localToScene(player.getBoundsInLocal()).getMinX();
 			double mapStageX = mapStage.localToScene(mapStage.getBoundsInLocal()).getMinX();
-						
+			
+			// When player is near the end of the window and pressing RIGHT:
 			if(key.equals("RIGHT") && playerX > 650 && mapStageX < -(endOfMap)) {
+				// Move everything to the left:
 				player.setTranslateX(player.getTranslateX()-player.getSpeed()/player.getFPS());
 				mapStage.setTranslateX(mapStage.getTranslateX()-player.getSpeed()/player.getFPS());
 				background.setTranslateX(background.getTranslateX()-(player.getSpeed()/player.getFPS())*0.5);
+				moveCollObjs("LEFT");
+				moveObjs("LEFT");
 			}
 			
+			// When player is near the beginning of the window and pressing LEFT:
 			else if(key.equals("LEFT") && playerX < 250 && mapStageX >= 0) {
+				// Move everything to the right:
 				player.setTranslateX(player.getTranslateX()+player.getSpeed()/player.getFPS());
 				mapStage.setTranslateX(mapStage.getTranslateX()+player.getSpeed()/player.getFPS());
 				background.setTranslateX(background.getTranslateX()+(player.getSpeed()/player.getFPS())*0.5);
+				moveCollObjs("RIGHT");
+				moveObjs("RIGHT");
 			}			
-		});
+		});	
 		
+		// build timeline
+		timeline = new Timeline(keyframe);
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.play();
+	}
+	
+	
+	/**
+	 * moveCollObjs
+	 * @param direction holds the direction in which the 
+	 * collision objects would move
+	 */
+	private void moveCollObjs(String direction) {
+		switch(direction) {
+		case "LEFT":
+			for(int i = 0; i < collObjList.size(); i++) {
+				RectangleCollision obj = collObjList.get(i);
+				obj.setTranslateX(obj.getTranslateX()-(player.getSpeed()/player.getFPS()));
+			}
+			break;
+			
+		case "RIGHT":
+			for(int i = 0; i < collObjList.size(); i++) {
+				RectangleCollision obj = collObjList.get(i);
+				obj.setTranslateX(obj.getTranslateX()+(player.getSpeed()/player.getFPS()));
+			}
+			break;
+		}
+	}
+	
+	/**
+	 * moveObjs
+	 * @param direction holds the direction in which the regular
+	 * objects would move.
+	 */
+	private void moveObjs(String direction) {
+		switch(direction) {
+		case "LEFT":
+			for(int i = 0; i < nodeList.size(); i++) {
+				Node obj = nodeList.get(i);
+				obj.setTranslateX(obj.getTranslateX()-(player.getSpeed()/player.getFPS()));
+			}
+			break;
+			
+		case "RIGHT":
+			for(int i = 0; i < nodeList.size(); i++) {
+				Node obj = nodeList.get(i);
+				obj.setTranslateX(obj.getTranslateX()+(player.getSpeed()/player.getFPS()));
+			}
+			break;
+		}
 	}
 	
 }
